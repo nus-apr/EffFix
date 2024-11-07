@@ -1,0 +1,19 @@
+# Update upon the experiment image, with latest code
+
+FROM yuntongzhang/efffix:experiments
+
+RUN rm -rf /opt/EffFix
+
+# copy src files of the tool
+COPY . /opt/EffFix/
+
+# install codeql dependencies for our queries
+WORKDIR /opt/EffFix/codeql
+RUN codeql pack install
+
+# set git url
+WORKDIR /opt/EffFix/
+RUN git remote rm origin
+RUN git remote add origin https://github.com/nus-apr/EffFix.git
+
+ENTRYPOINT /bin/bash
